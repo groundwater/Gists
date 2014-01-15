@@ -32,5 +32,7 @@ npm accomodates multiple types of packages
 ## npkg - the nodeOS package manager
 
 - install a package with `npkg install $PKG`
+  - installed to `$HOME/lib/node_modules`
+  - bins are linked to `$HOME/bin`
 - start a service `npkg start $PKG`
 - npkg can be used by every user (no root required)
