@@ -14,3 +14,17 @@ var options = {
 };
 require('./app.js').start(options);
 ```
+
+### A Better Config
+
+Even better, pass in fully-configured objects.
+
+```javascript
+// server.js
+var options = {
+  auth: require('./auth.js').init(process.env.USERNAME, process.env.PASSWORD)
+}
+require('./app.js').start(options);
+```
+
+In the above example, anything that meets the interface provided by `options.auth` can be substituted in.
