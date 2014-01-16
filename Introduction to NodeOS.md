@@ -7,6 +7,10 @@
 - open/free contribution
 - >50k modules
 - localized dependencies
+- open problems are being actively solved
+  1. pre-compilation of module
+  2. module signing
+  3. private registries
 
 ### types of modules
 
