@@ -40,3 +40,33 @@ timers.on('setImmediate', 'after', function (callback, timer) {
 });
 
 ```
+
+**implementing a trace**
+
+```javascript
+// this is a wondeful module global that represents the
+// current context/continuation in play
+var current = {};
+
+pro_net.on('connection', 'create', function (srv_handle, con_handle) {
+  // associate this handle with a new continuation
+  // we associate its continuation with the same continuation that
+  // the server had when it started listening
+  con_handle._continuation = { parent: srv_handle._continuation };
+});
+
+pro_net.on('handle', 'read', function (con_handle, buffer, callback) {
+  // we're about to enter `callback`
+  // switch the current continuation with the connection handle's
+  current = con_handle._continuation;
+});
+
+timers.on('setImmediate', 'create', function (callback, timer) {
+  // this timer inherits the current continuation
+  timer._continuation = current;
+});
+
+timers.on('setImmediate', 'before', function (callback, timer) {
+  current = timer._continuation;
+});
+```
