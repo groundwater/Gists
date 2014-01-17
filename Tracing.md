@@ -63,7 +63,7 @@ pro_net.on('handle', 'read', function (con_handle, buffer, callback) {
 
 timers.on('setImmediate', 'create', function (callback, timer) {
   // this timer inherits the current continuation
-  timer._continuation = current;
+  timer._continuation = { parent: current };
 });
 
 timers.on('setImmediate', 'before', function (callback, timer) {
