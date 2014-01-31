@@ -44,3 +44,29 @@ Message.NewFromObject = function (obj) {
   return this.New( obj.from, obj.to, obj.subj, obj.body );
 };
 ```
+
+## Dependency Injection
+
+```javascript
+function Server(Connection) {
+  //...
+}
+
+// server must create new connections
+// the constructor will be injected
+Server.Connection = null;
+
+Server.New = function () {
+  return new Server(this.Connection);
+};
+
+function inject(deps) {
+  return Object.create(Server, deps);
+}
+
+var MyServer = inject({
+  Connection: { value: require('./connection') }
+});
+
+var server = MyServer.New();
+```
