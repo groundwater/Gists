@@ -70,3 +70,26 @@ var MyServer = inject({
 
 var server = MyServer.New();
 ```
+
+## Method Overloading
+
+```javascript
+function inject(deps) {
+  return Object.create(Server, deps);
+}
+
+function defaults() {
+  return inject({
+    Connection: {
+      value: require('./connection')
+    }
+  });
+}
+
+module.exports = function INIT(deps) {
+  if (typeof deps === 'object') return inject(deps);
+  else if (deps === null)       return defaults();
+  else                          throw new Error('injection error');
+};
+```
+
