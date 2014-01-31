@@ -1,0 +1,46 @@
+# Design Patterns for Node
+
+My ongoing list
+
+- class/instance methods
+- chained constructors
+- dependency injection using `Object.create`
+- method overloading
+
+## Class/Instance Methods
+
+- place the constructors on *Class* function
+
+```javascript
+function Message () {
+  this.from    = null;
+  this.to      = null;
+  this.subject = null;
+  this.body    = null;
+}
+
+Message.NewEmpty = function () {
+  return new Message();
+}
+```
+
+## Chained Constructors
+
+```javascript
+Message.NewEmpty = function () {
+  return new Message();
+}
+
+Message.New = function (from, to, subj, body) {
+  var msg = this.NewEmpty();
+  msg.from    = from;
+  msg.to      = to;
+  msg.subject = subj;
+  msg.body    = body;
+  return msg;  
+};
+
+Message.NewFromObject = function (obj) {
+  return this.New( obj.from, obj.to, obj.subj, obj.body );
+};
+```
