@@ -77,6 +77,9 @@ var server = MyServer.New();
 
 ## Method Overloading
 
+- functions with business logic should take explicit arguments
+- variable arg functions should assemble their arguments, and delegate to a function that accepts explicit args
+
 ```javascript
 function inject(deps) {
   return Object.create(Server, deps);
@@ -87,7 +90,7 @@ function defaults() {
     Connection: {
       value: require('./connection')
     }
-  }
+  };
   return inject(deps);
 }
 
@@ -98,3 +101,5 @@ module.exports = function INIT(deps) {
 };
 ```
 
+A consumer of this module can call `INIT()` or `INIT(deps)`.
+The former uses module defaults, the latter allows you to provide an explicit dependency mapping.
