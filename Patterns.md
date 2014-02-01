@@ -26,6 +26,10 @@ Message.NewEmpty = function () {
 
 ## Chained Constructors
 
+- only call `new` in one constructor
+- for each way to create an object, create a new constructor
+- avoid re-using logic, instead delegate to other constructors
+
 ```javascript
 Message.NewEmpty = function () {
   return new Message();
