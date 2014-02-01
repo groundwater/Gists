@@ -83,11 +83,12 @@ function inject(deps) {
 }
 
 function defaults() {
-  return inject({
+  var deps = {
     Connection: {
       value: require('./connection')
     }
-  });
+  }
+  return inject(deps);
 }
 
 module.exports = function INIT(deps) {
