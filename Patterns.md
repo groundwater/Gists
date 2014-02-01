@@ -24,6 +24,10 @@ Message.NewEmpty = function () {
 }
 ```
 
+Rather than call `new Message()` you call `Message.New()`.
+This keeps the `function Message() {...}` body clean,
+and lets you create multiple constructors.
+
 ## Chained Constructors
 
 - only call `new` in one constructor
