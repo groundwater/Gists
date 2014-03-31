@@ -92,10 +92,13 @@ Server.prototype.createConnection = function (host) {
 /* the below is basically boilerplate */
 
 Server.New = function () {
+  // inject $ as the dependency container
+  // make $ non-enumerable, so you can for/in objects
   return Object.defineProperty(new Server(), '$', {value: this});
 };
 
 function inject(deps) {
+  // setup the dependency container
   return Object.create(Server, deps);
 }
 
@@ -111,4 +114,46 @@ function defaults() {
 module.exports = function INIT(deps) {
   return inject(deps || defaults());
 };
+```
+
+Every object created by `Server.New()` will receive the same set of dependencies
+without creating extra copies of those dependencies.
+Dependencies are accessible via the `this.$` property.
+
+## Private methods
+
+Create private methods as one-off functions.
+
+- private methods should not close over any outer scope
+- pass the main object in as the first parameter
+
+```javascript
+function hostByName(server) {
+  var name = server.name;
+  var host = name + '.com';
+
+  return host;
+}
+```
+
+Pass those private methods in as default dependencies.
+
+```javascript
+function defaults() {
+  return {
+    request: {
+      value: ... // normal dependency
+    },
+    hostByName: {
+      value: hostByName
+    }
+  }
+}
+```
+
+If you want to test your default dependencies,
+add them to your `module.exports`.
+
+```javascript
+module.exports.defaults = defaults;
 ```
