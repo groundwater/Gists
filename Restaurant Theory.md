@@ -9,4 +9,4 @@ Your menu items are what you advertise and sell, and you *must* sell them in a b
 If you are not comfortable making a feature a headline feature, it belongs in the ingredients list.
 
 Ingredients are only interesteing to other chefs.
-They seem important, but the ingredients are not what sells the dish.
+
