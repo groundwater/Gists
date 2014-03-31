@@ -1,4 +1,4 @@
-## Restaurant Theory of Business
+## Restaurant Theory
 
 1. divide all the features of your product into **menu** items, or **ingredients**
 2. menu items are advertised front of house, in a big way
