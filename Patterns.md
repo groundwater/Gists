@@ -10,6 +10,7 @@ My ongoing list
 ## Class/Instance Methods
 
 - place the constructors on *Class* function
+- only initialize data in the constructor
 
 ```javascript
 function Message () {
@@ -27,6 +28,19 @@ Message.NewEmpty = function () {
 Rather than call `new Message()` you call `Message.New()`.
 This keeps the `function Message() {...}` body clean,
 and lets you create multiple constructors.
+
+```javascript
+Message.NewReply = function (message, body) {
+  var reply = new Message();
+  
+  reply.from    = message.to;
+  reply.to      = message.from;
+  reply.subject = "RE: " + message.subject;
+  reply.body    = body;
+  
+  return reply;
+}
+```
 
 ## Chained Constructors
 
