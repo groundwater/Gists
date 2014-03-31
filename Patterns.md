@@ -31,13 +31,13 @@ and lets you create multiple constructors.
 
 ```javascript
 Message.NewReply = function (message, body) {
-  var reply = new Message();
-  
+  var reply     = new Message();
+
   reply.from    = message.to;
   reply.to      = message.from;
   reply.subject = "RE: " + message.subject;
   reply.body    = body;
-  
+
   return reply;
 }
 ```
@@ -54,70 +54,61 @@ Message.NewEmpty = function () {
 }
 
 Message.New = function (from, to, subj, body) {
-  var msg = this.NewEmpty();
+  var msg     = this.NewEmpty();
+
   msg.from    = from;
   msg.to      = to;
   msg.subject = subj;
   msg.body    = body;
+
   return msg;  
 };
 
-Message.NewFromObject = function (obj) {
-  return this.New( obj.from, obj.to, obj.subj, obj.body );
+Message.NewReply = function (message, body) {
+  var from    = message.to;
+  var to      = message.from;
+  var subject = "RE: " + message.subject;
+  var body    = body;
+
+  return this.New(from, to, subj, body);
 };
 ```
 
 ## Dependency Injection
 
+*here is the advanced maneuver*
+
+Inject dependencies that you would normally reference via `require`.
+
 ```javascript
-function Server(Connection) {
-  //...
+function Server() {
+  this.name = null;
 }
 
-// server must create new connections
-// the constructor will be injected
-Server.Connection = null;
+Server.prototype.createConnection = function (host) {
+  return this.$.request(host);
+};
+
+/* the below is basically boilerplate */
 
 Server.New = function () {
-  return new Server(this.Connection);
+  return Object.defineProperty(new Server(), '$', {value: this});
 };
 
 function inject(deps) {
   return Object.create(Server, deps);
 }
 
-var MyServer = inject({
-  Connection: { value: require('./connection') }
-});
-
-var server = MyServer.New();
-```
-
-## Method Overloading
-
-- functions with business logic should take explicit arguments
-- variable arg functions should assemble their arguments, and delegate to a function that accepts explicit args
-
-```javascript
-function inject(deps) {
-  return Object.create(Server, deps);
-}
-
+// default dependencies
 function defaults() {
-  var deps = {
-    Connection: {
-      value: require('./connection')
+  return {
+    request: {
+      value: require('some-request-module')
     }
   };
-  return inject(deps);
 }
 
 module.exports = function INIT(deps) {
-  if (typeof deps === 'object') return inject(deps);
-  else if (deps === null)       return defaults();
-  else                          throw new Error('injection error');
+  return inject(deps || defaults());
 };
 ```
-
-A consumer of this module can call `INIT()` or `INIT(deps)`.
-The former uses module defaults, the latter allows you to provide an explicit dependency mapping.
